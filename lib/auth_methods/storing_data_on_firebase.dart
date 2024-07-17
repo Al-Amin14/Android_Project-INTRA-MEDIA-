@@ -16,7 +16,8 @@ class storage_methods_auth {
 
     DocumentSnapshot snap =
         await _firestore.collection('users').doc(currentUser.uid).get();
-
+    print(
+        ")))))))))))))))))))))))))))))))(((((((((((((())))))))))))))\n${snap.data()}");
     return model.User__.fromSnap(snap);
   }
 
@@ -27,7 +28,7 @@ class storage_methods_auth {
 
     if (ispost) {
       String id = Uuid().v1();
-      ref=ref.child(id);
+      ref = ref.child(id);
     }
 
     UploadTask uploadTask = ref.putData(file);

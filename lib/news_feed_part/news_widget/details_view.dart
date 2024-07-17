@@ -58,56 +58,58 @@ class Details_View_News extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    title_str,
-                    style: TextStyle(
-                        fontFamily: 'Schyler',
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 162, 197, 208),fontSize: 17),
-                  ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                      width: width * 0.15,
-                          child: Text(
-                            news_source,
-                            style: TextStyle(
-                                fontFamily: 'Schyler',
-                                fontSize: 10,
-                                color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      Spacer(),
-                      Container(
-                      width: width * 0.15,
-                      child: Text(
-                        timeing_post,
-                        style: TextStyle(
-                            fontFamily: 'Schyler',
-                            fontSize: 10,
-                            color: Colors.white),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      title_str,
+                      style: TextStyle(
+                          fontFamily: 'Schyler',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 162, 197, 208),fontSize: 17),
                     ),
-                      ],
-                  ),
-                  SizedBox(
-                    height: height * 0.035,
-                  ),
-                  Text(
-                    deatails_news,
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Schyler',
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                        width: width * 0.15,
+                            child: Text(
+                              news_source,
+                              style: TextStyle(
+                                  fontFamily: 'Schyler',
+                                  fontSize: 10,
+                                  color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        Spacer(),
+                        Container(
+                        width: width * 0.15,
+                        child: Text(
+                          timeing_post,
+                          style: TextStyle(
+                              fontFamily: 'Schyler',
+                              fontSize: 10,
+                              color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                        ],
+                    ),
+                    SizedBox(
+                      height: height * 0.035,
+                    ),
+                    Text(
+                      deatails_news,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Schyler',
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               ),
             ),
           )

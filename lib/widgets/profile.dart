@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intra_media/Utils/Colors.dart';
 import 'package:intra_media/Utils/utils.dart';
 import 'package:intra_media/Widget_ForGloblaUse/following_button.dart';
+import 'package:intra_media/login_screen/login_screen.dart';
 
 class Myprofile extends StatefulWidget {
   final uid;
@@ -35,7 +37,7 @@ class _MyprofileState extends State<Myprofile> {
           .get();
       var postSnap = await FirebaseFirestore.instance
           .collection('post')
-          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('uid', isEqualTo: widget.uid)
           .get();
       postlen = postSnap.docs.length;
       userData = snapdata.data();
@@ -60,12 +62,6 @@ class _MyprofileState extends State<Myprofile> {
             backgroundColor: mobileBackgroundColor,
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
               title: Text(
                 'Profile',
                 style: TextStyle(
@@ -73,6 +69,23 @@ class _MyprofileState extends State<Myprofile> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ),
+              actions: [
+                if (widget.uid == FirebaseAuth.instance.currentUser!.uid)
+                  InkWell(
+                    onTap: () {
+                      Utils().SignOut();
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Longin_screen()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FaIcon(
+                        FontAwesomeIcons.signOut,
+                        color: Colors.white,
+                        size: 37.2,
+                      ),
+                    ),
+                  )
+              ],
             ),
             body: ListView(
               children: [
@@ -142,11 +155,12 @@ class _MyprofileState extends State<Myprofile> {
                             } else {
                               return GridView.builder(
                                 shrinkWrap: true,
-                                itemCount: (snapshot.data! as dynamic).docs.length,
+                                itemCount:
+                                    (snapshot.data! as dynamic).docs.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  crossAxisSpacing:5,
+                                  crossAxisSpacing: 5,
                                   mainAxisSpacing: 1.5,
                                   childAspectRatio: 1,
                                 ),
@@ -192,3 +206,4 @@ class _MyprofileState extends State<Myprofile> {
     );
   }
 }
+  

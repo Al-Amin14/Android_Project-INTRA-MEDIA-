@@ -38,9 +38,7 @@ class _Post_card_uiState extends State<Post_card_ui> {
         .collection('comments')
         .get();
     count_comment = snap.docs.length;
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
@@ -108,7 +106,10 @@ class _Post_card_uiState extends State<Post_card_ui> {
                                           .map(
                                             (e) => InkWell(
                                               onTap: () async {
-                                                firebase_storing_data().deletingPost(widget.snap['postId']);
+                                                firebase_storing_data()
+                                                    .deletingPost(
+                                                        widget.snap['postId']);
+                                                Navigator.of(context).pop();
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.symmetric(

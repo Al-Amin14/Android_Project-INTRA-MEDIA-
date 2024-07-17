@@ -30,7 +30,9 @@ class _Home_page_ScreenState extends State<Home_page_Screen> {
     Posting_screeen(),
     Notes_resourse(),
     Allumnai(),
-    Myprofile(uid: FirebaseAuth.instance.currentUser!.uid,),
+    Myprofile(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    ),
   ];
 
   var index = 0;
@@ -45,9 +47,12 @@ class _Home_page_ScreenState extends State<Home_page_Screen> {
   }
 
   addData() async {
-    print("-------------");
+    print(
+        "------------++++++++++++++++++++++++++++++++++++++++++++------------------");
     UserProvider _userProvider = Provider.of(context, listen: false);
     await _userProvider.refersUser();
+    print("Printing data here______________________________________---------------------------");
+    print(_userProvider.refersUser());
     setState(() {
       iscollectec = true;
     });
@@ -83,8 +88,12 @@ class _Home_page_ScreenState extends State<Home_page_Screen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: iscollectec==false? Center(child: CircularProgressIndicator(
-        )):pages[index],
+        body: iscollectec == false
+            ? Center(
+                child: CircularProgressIndicator(
+                color: Colors.black,
+              ))
+            : pages[index],
         bottomNavigationBar: CurvedNavigationBar(
           index: index,
           color: Colors.green,

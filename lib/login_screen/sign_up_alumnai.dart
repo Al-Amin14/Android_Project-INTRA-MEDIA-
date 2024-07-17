@@ -8,20 +8,27 @@ import 'package:intra_media/Utils/utils.dart';
 import 'package:intra_media/Widget_ForGloblaUse/outline_borderss.dart';
 import 'package:intra_media/Widget_ForGloblaUse/text_form_filed.dart';
 import 'package:intra_media/auth_methods/Auth_methods_for_sing_up.dart';
+import 'package:intra_media/auth_methods/auth_methods_for_alumnia_data_storing.dart';
 
-class SigngUp extends StatefulWidget {
-  const SigngUp({super.key});
+class SignUpAlumnai extends StatefulWidget {
+  const SignUpAlumnai({super.key});
 
   @override
-  State<SigngUp> createState() => _SigngUpState();
+  State<SignUpAlumnai> createState() => _SignUpAlumnaiState();
 }
 
-class _SigngUpState extends State<SigngUp> {
+class _SignUpAlumnaiState extends State<SignUpAlumnai> {
   final _email = TextEditingController();
   final _pass = TextEditingController();
   final _department = TextEditingController();
-  final semester = TextEditingController();
+  final linkedinId = TextEditingController();
+  final jobdetails = TextEditingController();
   final bio = TextEditingController();
+  final github = TextEditingController();
+  final fullname = TextEditingController();
+  final batch_name = TextEditingController();
+  final contact_email = TextEditingController();
+
   Uint8List? _image;
 
   bool show_eye = false;
@@ -35,6 +42,7 @@ class _SigngUpState extends State<SigngUp> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: Center(
           child: Container(
@@ -44,7 +52,7 @@ class _SigngUpState extends State<SigngUp> {
                   gradient: LinearGradient(
                       colors: [
                     Colors.green,
-                    Colors.white,
+                    Color.fromARGB(255, 40, 165, 117),
                     const Color.fromARGB(255, 47, 33, 33)
                   ],
                       begin: FractionalOffset(0.0, 0.0),
@@ -107,12 +115,12 @@ class _SigngUpState extends State<SigngUp> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
-                        height: 450,
+                        height: height * 0.7,
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                  color: const Color.fromARGB(255, 102, 98, 98),
-                                  spreadRadius: 12.5,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  spreadRadius: 7.5,
                                   blurRadius: 7,
                                   offset: Offset(1, 1))
                             ],
@@ -129,10 +137,13 @@ class _SigngUpState extends State<SigngUp> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 30),
                                   child: Text_form_fields(
-                                      storingdata: _email,
-                                      hint_text_provide: 'Enter your email',
-                                      icons_provide: Icon(Icons.email,color: Colors.black,),
-                                      )),
+                                    storingdata: _email,
+                                    hint_text_provide: 'Enter your email',
+                                    icons_provide: Icon(
+                                      Icons.email,
+                                      color: Colors.black,
+                                    ),
+                                  )),
                               SizedBox(
                                 height: 30,
                               ),
@@ -160,8 +171,12 @@ class _SigngUpState extends State<SigngUp> {
                                       horizontal: 30),
                                   child: Text_form_fields(
                                     storingdata: _department,
-                                    hint_text_provide: 'Enter your department',
-                                    icons_provide: Icon(Icons.folder_shared,color: Colors.black,),
+                                    hint_text_provide:
+                                        'Enter what your department was',
+                                    icons_provide: Icon(
+                                      Icons.folder_shared,
+                                      color: Colors.black,
+                                    ),
                                   )),
                               SizedBox(
                                 height: 30,
@@ -170,9 +185,86 @@ class _SigngUpState extends State<SigngUp> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 30),
                                   child: Text_form_fields(
-                                    storingdata: semester,
-                                    hint_text_provide: 'Enter your semester(1.1,1.2,2.1,2.2 .......)',
-                                    icons_provide: Icon(Icons.book,color: Colors.black,),
+                                    storingdata: linkedinId,
+                                    hint_text_provide:
+                                        'Enter your linkedIn id link',
+                                    icons_provide: Icon(
+                                      FontAwesomeIcons.linkedin,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Text_form_fields(
+                                    storingdata: github,
+                                    hint_text_provide:
+                                        'Enter your github id link',
+                                    icons_provide: Icon(
+                                      FontAwesomeIcons.github,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Text_form_fields(
+                                    storingdata: contact_email,
+                                    hint_text_provide: 'Contact Email',
+                                    icons_provide: Icon(
+                                      Icons.email_rounded,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Text_form_fields(
+                                    storingdata: fullname,
+                                    hint_text_provide: 'Enter you full-name',
+                                    icons_provide: Icon(
+                                      Icons.details,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Text_form_fields(
+                                    storingdata: batch_name,
+                                    hint_text_provide: 'Enter your batch name',
+                                    icons_provide: Icon(
+                                      Icons.batch_prediction,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  child: Text_form_fields(
+                                    storingdata: jobdetails,
+                                    hint_text_provide:
+                                        'Enter you current Job and your details about your professions also with skills',
+                                    icons_provide: Icon(
+                                      Icons.format_align_justify_rounded,
+                                      color: Colors.black,
+                                    ),
+                                    maxline: 3,
                                   )),
                               SizedBox(
                                 height: 30,
@@ -183,19 +275,27 @@ class _SigngUpState extends State<SigngUp> {
                                   child: Text_form_fields(
                                     storingdata: bio,
                                     hint_text_provide: 'Enter you bio',
-                                    icons_provide: Icon(Icons.data_array,color: Colors.black,),
+                                    icons_provide: Icon(
+                                      Icons.data_array,
+                                      color: Colors.black,
+                                    ),
                                   )),
                               SizedBox(
                                 height: 20,
                               ),
-                              auth_method_signupu(
-                                  emailing: _email,
-                                  passwording: _pass,
-                                  department: _department,
-                                  semester: semester,
-                                  bio: bio,
-                                  file:_image,
-                                  ),
+                              singUP_for_Alumni(
+                                emial_alm: _email,
+                                department: _department,
+                                bio: bio,
+                                file: _image,
+                                pass_alm: _pass,
+                                jobdetails: jobdetails,
+                                linkIDin: linkedinId,
+                                Batch: batch_name,
+                                Contactemail: contact_email,
+                                fullname: fullname,
+                                github: github,
+                              ),
                               SizedBox(
                                 height: 100,
                               ),

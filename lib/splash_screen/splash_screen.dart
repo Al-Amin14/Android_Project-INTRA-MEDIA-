@@ -12,7 +12,6 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   final moving_sevices = splash_services();
   void initState() {
     super.initState();
-    print("---------------++++++++++++++++++++++++++++++++");
     moving_sevices.islogin(context);
   }
 

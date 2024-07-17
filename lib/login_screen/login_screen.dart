@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intra_media/Utils/utils.dart';
+import 'package:intra_media/Widget_ForGloblaUse/outline_borderss.dart';
 import 'package:intra_media/Widget_ForGloblaUse/text_form_filed.dart';
 import 'package:intra_media/auth_methods/Authencation_Methos.dart';
+import 'package:intra_media/login_screen/alumnai_or_student.dart';
 import 'package:intra_media/login_screen/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intra_media/prividers/user_providers.dart';
@@ -98,11 +100,19 @@ class _Longin_screenState extends State<Longin_screen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Text_form_fields(
-                          storingdata: passwordcontroller,
-                          hint_text_provide: 'Enter you password(1-8 letters)',
-                          icons_provide: Icon(Icons.lock,color: Colors.black,),
-                          ),
+                      child: TextFormField(
+                          obscureText: true,
+                          style: TextStyle(color: Colors.black,fontFamily: 'Schyler'),
+                          controller:passwordcontroller,
+                          decoration: InputDecoration(
+                              hintText: 'Enter your password 1-8 letter',
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                              prefixIcon: Icon(Icons.lock,color: Colors.black,),
+                              focusedBorder: forfocusing(),
+                              enabledBorder: for_enable_focusing()),
+                        ),
                     ),
                     SizedBox(
                       height: 30,
@@ -124,7 +134,7 @@ class _Longin_screenState extends State<Longin_screen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => SigngUp())));
+                                  builder: ((context) => Alumnai_Or_Student())));
                         },
                         child: Container(
                           width: 200,

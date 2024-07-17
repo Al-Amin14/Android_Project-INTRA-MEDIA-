@@ -20,12 +20,9 @@ class Myapp_home_page extends StatefulWidget {
 
 class _Myapp_home_pageState extends State<Myapp_home_page> {
   String username = "";
-  @override
 
+  @override
   /*
-
-
-  @override
   // void initState() {
   //   super.initState();
   //   getUsername();
@@ -72,7 +69,7 @@ class _Myapp_home_pageState extends State<Myapp_home_page> {
               builder: (context,AsyncSnapshot<QuerySnapshot<Map<String,dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Container(
-                    child: CircularProgressIndicator(),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 return ListView.builder(

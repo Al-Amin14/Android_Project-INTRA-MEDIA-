@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-final styling1 = TextStyle(fontWeight: FontWeight.bold,fontSize: 30,fontFamily: 'Schyler');
+final styling1 =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: 'Schyler');
 
 class Utils {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool looding = false;
   pickImgae(ImageSource source) async {
     final ImagePicker _imgePicker = ImagePicker();
@@ -31,5 +33,9 @@ class Utils {
       textColor: Colors.white,
       fontSize: 16.0,
     );
+  }
+
+  Future<void> SignOut() async {
+    await _auth.signOut();
   }
 }

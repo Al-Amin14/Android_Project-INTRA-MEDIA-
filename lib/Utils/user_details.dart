@@ -25,9 +25,11 @@ class User__ {
         "bio": bio,
         "followers": followers,
         "following": following,
-        "PhotoUrl":PhotoUrl,
-  };
+        "PhotoUrl": PhotoUrl,
+      };
   static User__ fromSnap(DocumentSnapshot snap) {
+    print("skdlsjldfksdkfjslf");
+    print(snap);
     var snapshot = snap.data() as Map<String, dynamic>;
     return User__(
       email: snapshot['email'],

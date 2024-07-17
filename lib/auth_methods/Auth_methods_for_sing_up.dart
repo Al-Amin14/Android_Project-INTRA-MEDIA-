@@ -50,6 +50,7 @@ class _auth_method_signupuState extends State<auth_method_signupu> {
       String photoUrl = await storage_methods_auth()
           .uploadImageto_Storage('ProfilesPics', widget.file!, false);
       _firestor.collection('users').doc(cread.user!.uid).set({
+        'Alumni':'false',
         'username': widget.emailing.text.toString().split('@')[0],
         'email': widget.emailing.text.toString(),
         'uid': cread.user!.uid,

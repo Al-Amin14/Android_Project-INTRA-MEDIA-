@@ -1,5 +1,10 @@
+import 'dart:typed_data';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:intra_media/Sells_Post_shahadat/ProductDetailsPage.dart';
 import 'package:intra_media/Sells_Post_shahadat/Product.dart';
@@ -8,6 +13,9 @@ import 'package:intra_media/Sells_Post_shahadat/BuyPage.dart';
 import 'package:intra_media/Sells_Post_shahadat/SellPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intra_media/Utils/utils.dart';
+import 'package:intra_media/Widget_ForGloblaUse/outline_borderss.dart';
+import 'package:intra_media/auth_methods/storing_data_on_firebase.dart';
 
 /*class SellPage extends StatefulWidget {
   final Function(Product) addProduct;
@@ -195,34 +203,56 @@ class _SellPageState extends State<SellPage> {
   }
 }*/
 class SellPage extends StatefulWidget {
+  final uid;
   final Function(Product) addProduct;
 
-  SellPage({required this.addProduct});
+  SellPage({required this.addProduct, required this.uid});
 
   @override
   _SellPageState createState() => _SellPageState();
 }
 
 class _SellPageState extends State<SellPage> {
+  var photoUrl;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
-  final _locationController=TextEditingController();
-  final _sellerNameController = TextEditingController();
+  final _locationController = TextEditingController();
   final _sellerContactController = TextEditingController();
-  File? _selectedImage;
+  Uint8List? _selectedImage;
+  var geting_user_details;
+  var data_keep;
+
+  @override
+  void initState() {
+    super.initState();
+    Storing_my_data();
+  }
+
+  void Storing_my_data() async {
+    var geting_user_details = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.uid)
+        .get();
+    data_keep = geting_user_details.data();
+  }
 
   Future<void> _getImage() async {
-    final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
+    Uint8List file = await Utils().pickImgae(ImageSource.gallery);
+    if (file != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path);
+        _selectedImage = file;
+        conver_to_image_url();
       });
     }
+  }
+
+  conver_to_image_url() async {
+    photoUrl = await storage_methods_auth()
+        .uploadImageto_Storage('Product_post', _selectedImage!, true);
+    print('________________+++++++++++++++++++++++++++++++++--------------');
+    print(photoUrl);
   }
 
   @override
@@ -230,21 +260,23 @@ class _SellPageState extends State<SellPage> {
     _nameController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
-    _sellerNameController.dispose();
     _sellerContactController.dispose();
     super.dispose();
   }
 
   void _submitForm() {
+    print("skdjlksadflkj");
+    print(photoUrl);
     if (_formKey.currentState!.validate()) {
       if (_formKey.currentState!.validate()) {
         final product = {
           'name': _nameController.text,
           'description': _descriptionController.text,
           'price': double.parse(_priceController.text),
-          'sellerName': _sellerNameController.text,
+          'sellerName': data_keep['username'].toString(),
           'sellerContact': _sellerContactController.text,
-          'image': _selectedImage,
+          'datetime': DateFormat.yMMMd().format(DateTime.now()).toString(),
+          'image': photoUrl,
           // Assuming _selectedImage is a String or URL
           'timestamp': FieldValue.serverTimestamp(),
           // Add timestamp for sorting or other uses
@@ -270,7 +302,6 @@ class _SellPageState extends State<SellPage> {
           _nameController.clear();
           _descriptionController.clear();
           _priceController.clear();
-          _sellerNameController.clear();
           _sellerContactController.clear();
           _selectedImage = null;
 
@@ -278,8 +309,7 @@ class _SellPageState extends State<SellPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Product added!')),
           );
-        })
-            .catchError((error) {
+        }).catchError((error) {
           // Handle errors, e.g., show an error Snackbar
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Failed to add product: $error')),
@@ -288,18 +318,28 @@ class _SellPageState extends State<SellPage> {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
+    final width = MediaQuery.sizeOf(context).width;
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child:SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
             children: [
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Product Name'),
+                decoration: InputDecoration(
+                  labelText: 'Product Name',
+                  enabledBorder: for_enable_focusing(),
+                  focusedBorder: forfocusing(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter product name';
@@ -310,7 +350,11 @@ class _SellPageState extends State<SellPage> {
               SizedBox(height: 10.0),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  enabledBorder: for_enable_focusing(),
+                  focusedBorder: forfocusing(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a description';
@@ -318,12 +362,15 @@ class _SellPageState extends State<SellPage> {
                   return null;
                 },
               ),
-
               SizedBox(height: 10.0),
               TextFormField(
                 controller: _priceController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Price of  Product'),
+                decoration: InputDecoration(
+                  labelText: 'Price of  Product',
+                  enabledBorder: for_enable_focusing(),
+                  focusedBorder: forfocusing(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the price of your product';
@@ -335,21 +382,15 @@ class _SellPageState extends State<SellPage> {
                 },
               ),
               SizedBox(height: 10.0),
-              TextFormField(
-                controller: _sellerNameController,
-                decoration: InputDecoration(labelText: 'Name of the Seller'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter seller name';
-                  }
-                  return null;
-                },
-              ),
               SizedBox(height: 10.0),
               TextFormField(
                 controller: _locationController,
                 // keyboardType: TextInputType.text,
-                decoration: InputDecoration(labelText: 'Location'),
+                decoration: InputDecoration(
+                  labelText: 'Location',
+                  enabledBorder: for_enable_focusing(),
+                  focusedBorder: forfocusing(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the loaction of your product';
@@ -358,11 +399,14 @@ class _SellPageState extends State<SellPage> {
                   return null;
                 },
               ),
-              SizedBox(height:10
-              ),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _sellerContactController,
-                decoration: InputDecoration(labelText: 'Seller Contact'),
+                decoration: InputDecoration(
+                  labelText: 'Seller Contact',
+                  enabledBorder: for_enable_focusing(),
+                  focusedBorder: forfocusing(),
+                ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -378,18 +422,20 @@ class _SellPageState extends State<SellPage> {
                   foregroundColor: Colors.white, // foreground
                 ),
                 onPressed: _getImage,
-
-                child: Text('Upload Image of Product'
-                ),
-
+                child: Text('Upload Image of Product'),
               ),
               SizedBox(height: 10.0),
               if (_selectedImage != null)
-                Image.file(
-                  _selectedImage!,
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.cover,
+                Container(
+                  width: width * 0.7,
+                  height: height * 0.3,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.black,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: MemoryImage(_selectedImage!),
+                      )),
                 ),
               SizedBox(height: 10.0),
               ElevatedButton(
@@ -407,4 +453,3 @@ class _SellPageState extends State<SellPage> {
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -95,6 +96,8 @@ class _MyHomePageState extends State<MyHomePage>
       description: doc['description'],
       price: doc['price'].toDouble(),
       sellerName: doc['sellerName'],
+      datetime: doc['datetime'],
+      image:doc['image'],
       sellerContact: doc['sellerContact'],
       // image: File(doc['image']), // Assuming 'image' is stored as a file path in Firestore
     ))
@@ -108,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage>
       'price': product.price,
       'sellerName': product.sellerName,
       'sellerContact': product.sellerContact,
-      'image': product.image != null ? product.image!.path : null, // Store file path if image exists
+      'image': product.image, // Store file path if image exists
     }).then((value) {
       // Successfully added product to Firestore
       ScaffoldMessenger.of(context).showSnackBar(
@@ -136,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage>
         title: Text(
           'Sell & Buy Your Product',
           style: TextStyle(
+            fontFamily: 'Schyler',
             color: Colors.white,
             fontSize: 20,
             fontStyle: FontStyle.italic,
@@ -145,15 +149,15 @@ class _MyHomePageState extends State<MyHomePage>
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: 'Sell'),
-            Tab(text: 'Buy'),
+            Tab(child: Text('Sell',style: TextStyle(fontFamily: 'Schyler',color: Colors.white),),),
+            Tab(child: Text('Buy',style: TextStyle(fontFamily: 'Schyler',color: Colors.white),),),
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          SellPage(addProduct: _addProduct),
+          SellPage(addProduct: _addProduct,uid: FirebaseAuth.instance.currentUser!.uid,),
           StreamBuilder<List<Product>>(
             stream: _productsStream,
             builder: (context, snapshot) {

@@ -59,6 +59,7 @@ class _Authentication_of_appsState extends State<Authentication_of_apps> {
         login();
         setState(() {
           widget.email_controller.text = '';
+          widget.passwordcontroller.text = '';
         });
       },
       child: Container(
