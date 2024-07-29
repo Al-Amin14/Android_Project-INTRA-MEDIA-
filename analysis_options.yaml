@@ -7,6 +7,13 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+<<<<<<< HEAD
+=======
+analyzer:
+  errors:
+    non_constant_identifier_names: ignore
+    use_function_type_syntax_for_parameters: ignore
+>>>>>>> 5b14e7de52d85e2eef7c8b64481748afe8b188aa
 include: package:flutter_lints/flutter.yaml
 
 linter:
