@@ -79,7 +79,7 @@ class _Post_second_partState extends State<Post_second_part> {
                       'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'),
                 ),
                 SizedBox(
-                  height: 10,
+                  height:10,
                 ),
                 Container(
                   height: height * 0.4,

@@ -1,38 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intra_media/widgets/profile.dart';
 
-class Follow_button extends StatelessWidget {
+class Follow_button extends StatefulWidget {
   Color background_Color;
   Color border_Color;
   final txt;
-  Follow_button(
-      {super.key,
-      required this.txt,
-      required this.border_Color,
-      required this.background_Color,
-      });
+  final uid;
+  var isfollowig;
+  Follow_button({
+    super.key,
+    required this.txt,
+    required this.uid,
+    required this.border_Color,
+    required this.background_Color,
+    required this.isfollowig,
+  });
+
+  @override
+  State<Follow_button> createState() => _Follow_buttonState();
+}
+
+class _Follow_buttonState extends State<Follow_button> {
+  final FirebaseFirestore _fireStor = FirebaseFirestore.instance;
+
+  final FirebaseAuth cru = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    final width=MediaQuery.sizeOf(context).width*1;
-    final height=MediaQuery.sizeOf(context).height*1;
+    final width = MediaQuery.sizeOf(context).width * 1;
+    final height = MediaQuery.sizeOf(context).height * 1;
     return Container(
       padding: EdgeInsets.all(20),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          if (widget.txt != 'Edit Profile' && widget.txt == 'Follow') {
+            _fireStor.collection('users').doc(widget.uid).update({
+              'following': FieldValue.arrayUnion([cru.currentUser!.uid])
+            });
+            setState(() {
+              widget.isfollowig = true;
+            });
+          } else if (widget.txt == 'Following') {
+            _fireStor.collection('users').doc(widget.uid).update({
+              'following': FieldValue.arrayRemove([cru.currentUser!.uid])
+            });
+            setState(() {
+              widget.isfollowig = false;
+            });
+          }
+        },
         child: Container(
           alignment: Alignment.center,
-          height: height*0.05,
-          width: width*0.5,
+          height: height * 0.05,
+          width: width * 0.5,
           decoration: BoxDecoration(
-            color: background_Color,
+            color: widget.background_Color,
             border: Border.all(
-              color: border_Color,
+              color: widget.border_Color,
             ),
             borderRadius: BorderRadius.circular(11),
           ),
           child: Text(
-            txt,
-            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),
+            widget.txt,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
       ),

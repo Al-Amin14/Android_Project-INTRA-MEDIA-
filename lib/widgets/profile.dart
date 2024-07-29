@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intra_media/Utils/Colors.dart';
-import 'package:intra_media/Utils/utils.dart';
+import 'package:intra_media/Utils/Colors.dart';                         
+import 'package:intra_media/Utils/utils.dart';                         
 import 'package:intra_media/Widget_ForGloblaUse/following_button.dart';
-import 'package:intra_media/login_screen/login_screen.dart';
+import 'package:intra_media/login_screen/login_screen.dart';           
 
 class Myprofile extends StatefulWidget {
   final uid;
@@ -17,12 +17,12 @@ class Myprofile extends StatefulWidget {
 }
 
 class _MyprofileState extends State<Myprofile> {
+  var isfollowing = false;
   var follower = 0;
   var following = 0;
   var postlen = 0;
   var collect_data = false;
   var userData;
-  var isfollowing = false;
 
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _MyprofileState extends State<Myprofile> {
     } catch (e) {
       Utils().toastMessage(e.toString());
     }
-    setState(() {
+    setState((){
       collect_data = true;
     });
   }
@@ -125,18 +125,24 @@ class _MyprofileState extends State<Myprofile> {
                       ),
                       FirebaseAuth.instance.currentUser!.uid == widget.uid
                           ? Follow_button(
+                              uid:widget.uid,
+                              isfollowig:isfollowing,
                               txt: 'Edit Profile',
                               border_Color: Colors.white,
                               background_Color: Colors.black,
                             )
                           : isfollowing
                               ? Follow_button(
+                                  uid:widget.uid,
                                   txt: 'Following',
+                                  isfollowig:isfollowing,
                                   border_Color: Colors.blue,
                                   background_Color: Colors.blue,
                                 )
                               : Follow_button(
+                                  uid:widget.uid,
                                   txt: 'Follow',
+                                  isfollowig:isfollowing,
                                   border_Color: Colors.blue,
                                   background_Color: Colors.blue,
                                 ),
@@ -206,4 +212,3 @@ class _MyprofileState extends State<Myprofile> {
     );
   }
 }
-  

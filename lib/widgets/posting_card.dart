@@ -37,8 +37,9 @@ class _Post_card_uiState extends State<Post_card_ui> {
         .doc(widget.snap['postId'])
         .collection('comments')
         .get();
+    setState(() {
     count_comment = snap.docs.length;
-    setState(() {});
+    });
   }
 
   @override
