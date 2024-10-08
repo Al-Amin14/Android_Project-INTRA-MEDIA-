@@ -1,0 +1,18 @@
+            
+            /////----------Using stream builder--------------------------\\\\\\\\
+
+1-(this is first snapshot for stream)--->>> FirebaseFirestore.instance.collection('post').snapshots(),
+2-(length of snapshot)--->>>  snapshot.data!.docs.length,
+3-(data snap)--->>> snapshot.data!.docs[index].data()
+
+
+            //////-------------Using Future builder--------------------\\\\\\\\\\\\\\\
+
+1--(future data )--->>>>   FirebaseFirestore.instance.collection('post').where('uid', isEqualTo:widget.uid).get(),
+2-(future data to fectching )--->> userData = snapdata.data();
+3-(future data to checking info)----->> userData['followers'];
+
+
+
+
+
